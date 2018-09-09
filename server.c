@@ -21,7 +21,7 @@
 
 char translate_to_pirate(char *buf);
 
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
 	struct sockaddr_in sin;
 	char buf[MAX_LINE];
@@ -59,15 +59,7 @@ int main(int argc, char * argv[])
 		}
 		while (len = recv(new_s, buf, sizeof(buf), 0)){
 			
-			if(strncmp (flag,"-p",2) == 0){
-			    //printf("translate");
-				translate_to_pirate(buf);
-				//send back to client	
-				len1 = strlen(buf) +1;
-				send(new_s, buf, len1, 0);
 			
-			}
-
 			/* Logic to strip the NULL chars */
 			int i;
             for(i=0;i<sizeof(buf);i++) {
@@ -75,6 +67,18 @@ int main(int argc, char * argv[])
                     printf("%c", buf[i]);
             }
 			
+
+			if(strncmp (flag,"-p",2) == 0){
+			    //printf("translate");
+				translate_to_pirate(buf);
+				//printf("BUF: %s\n", buf);
+				//printf("Pirate Word OUT: %s\n", buf);
+				//send back to client	
+				len1 = strlen(buf) +1;
+				send(new_s, buf, len1, 0);
+			
+			}
+
 			/* No need to fputs, as we are already printing
 			   one char at a time */	
 			//fputs(buf, stdout);
@@ -106,29 +110,16 @@ char translate_to_pirate(char *buf){
 				{"restaurant","galley"},
 				{"hotel","fleabag inn"}};
 
-	/*const char s[2] = " ";
-	char *token;
 
-	token = strtok(buf,s);
-	printf("Token: %s", token);
-	while (token != NULL){
-		if(strcmp(token,"\0")== 0){
-			break;
-		}
-		/*int i;
-		for(i=0;i<sizeof(words);i++){
-			if(strncmp(token,words[i][0],strlen(token)) == 0){
-				printf("Normal Word: %s\n Pirate Word: %s\n", token, words[i][0]);
-			}
-		} 
-		
-		token = strtok(NULL, s);
-	}	*/
-	printf("here");
+	int len = strlen(buf) - 1;
 	int i;
-	for(i=0;i<=sizeof(words);i++){
-		if(strcmp(buf,words[i][0]) == 0){
-			printf("Normal Word: %s\n Pirate Word: %s\n", buf, words[i][0]);
+	for(i=0;i<17;i++){
+		if(strncmp(buf,words[i][0], len) == 0){
+			//printf("Pirate Word: %s\n", words[i][1]);
+			//printf(words[i][1]);
+			bzero(buf,sizeof(buf));
+			strcpy(buf,words[i][1]);
+			
 		}
 	} 
 

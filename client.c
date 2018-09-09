@@ -69,6 +69,7 @@ int main(int argc, char * argv[])
 			if(buf[i] != '\0')
 				printf("%c",buf[i]);
 		}
+		printf("\n");
 	}
 }
 
