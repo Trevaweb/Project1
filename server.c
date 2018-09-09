@@ -19,7 +19,8 @@
 #define MAX_PENDING 5
 #define MAX_LINE 256
 
-char translate_to_pirate(char *buf);
+void translate_to_pirate(char *buf);
+void translate_to_normal(char *buf);
 
 int main(int argc, char *argv[])
 {
@@ -73,8 +74,10 @@ int main(int argc, char *argv[])
 				len1 = strlen(buf) +1;
 				send(new_s, buf, len1, 0);
 			
-			} else if (flag,"-n",2) == 0){
-
+			} else if(strncmp (flag,"-n",2) == 0){
+				translate_to_normal(buf);
+				len1 = strlen(buf) +1;
+				send(new_s, buf, len1, 0);
 			}
 
 			/* No need to fputs, as we are already printing
@@ -87,7 +90,7 @@ int main(int argc, char *argv[])
 	}
 }
 
-char translate_to_pirate(char *buf){
+void translate_to_pirate(char *buf){
 
 	char *words[17][2] = {
 				{"hello","ahoy"},
@@ -125,6 +128,58 @@ char translate_to_pirate(char *buf){
 			int len = strlen(words[i][0]);
 			if(strncmp(token,words[i][0], len) == 0){
 				strcat(newPhrase,words[i][1]);
+				strcat(newPhrase," ");
+				found = 1;
+			}
+		}
+		if (!found){
+			strcat(newPhrase,token);
+			strcat(newPhrase," ");
+		}	
+		token = strtok(NULL, s);
+	}	
+	bzero(buf,sizeof(buf));
+	strcpy(buf,newPhrase);	
+}
+
+void translate_to_normal(char *buf){
+
+	char *words[17][2] = {
+				{"hello","ahoy"},
+				{"hi","yo-ho-ho"},
+				{"my","me"},
+				{"friend","bucko"},
+				{"sir","mate"},
+				{"miss","proud beauty"},
+				{"stranger","scurvy dog"},
+				{"officer","foul blaggart"},
+				{"where","whar"},
+				{"is","be"},
+				{"the","thar"},
+				{"you","ye"},
+				{"water","rum"},
+				{"nearby","broadside"},
+				{"restroom","head"},
+				{"restaurant","galley"},
+				{"hotel","fleabag inn"}};
+
+	char newPhrase[MAX_LINE];
+	const char s[2] = " ";
+	char *token;
+	bzero(newPhrase,sizeof(newPhrase));
+	token = strtok(buf,s);
+	
+	while (token != NULL){
+		int found = 0;
+		if(strcmp(token,"\0")== 0){
+			break;
+		}
+		
+		int i;
+		for(i=0;i<17;i++){
+			int len = strlen(words[i][01]);
+			if(strncmp(token,words[i][1], len) == 0){
+				strcat(newPhrase,words[i][0]);
 				strcat(newPhrase," ");
 				found = 1;
 			}
