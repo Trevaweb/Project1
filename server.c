@@ -15,16 +15,17 @@
 #include <string.h> 
 #include <unistd.h>
 
-#define SERVER_PORT 65534
+#define SERVER_PORT 65369
 #define MAX_PENDING 5
 #define MAX_LINE 256
 
-int main()
+int main(int argc, char * argv[])
 {
 	struct sockaddr_in sin;
 	char buf[MAX_LINE];
-	int len;
+	int len,len1;
 	int s, new_s;
+    char *flag;
 	/* build address data structure */
 	bzero((char *)&sin, sizeof(sin));
 	sin.sin_family = AF_INET;
@@ -33,6 +34,11 @@ int main()
 
 	bzero(buf, sizeof(buf));
 	
+	if(argc==2) {
+		flag = argv[1];
+	} else {
+		flag = "NA";
+	}
 	/* setup passive open */
 	if ((s = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
 		perror("simplex-talk: socket");
@@ -51,6 +57,13 @@ int main()
 		}
 		while (len = recv(new_s, buf, sizeof(buf), 0)){
 
+			if(strncmp (flag,"-p",2) == 0){
+			    printf("translate");
+			
+			}
+            //send back to client	
+			len1 = strlen(buf) +1;
+			send(new_s, buf, len1, 0);
 			/* Logic to strip the NULL chars */
 			int i;
                         for(i=0;i<sizeof(buf);i++) {

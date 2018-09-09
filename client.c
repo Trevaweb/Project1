@@ -15,7 +15,7 @@
 #include <netdb.h>
 #include <unistd.h>
 
-#define SERVER_PORT 65534
+#define SERVER_PORT 65369
 #define MAX_LINE 256
 
 int main(int argc, char * argv[])
@@ -61,6 +61,14 @@ int main(int argc, char * argv[])
 		buf[MAX_LINE-1] = '\0';
 		len = strlen(buf) + 1;
 		send(s, buf, len, 0);
+
+		bzero(buf,sizeof(buf));
+		recv(s, buf, sizeof(buf), 0);
+		int i;
+		for (i=0; i<sizeof(buf);i++){
+			if(buf[i] != '\0')
+				printf("%c",buf[i]);
+		}
 	}
 }
 
