@@ -19,6 +19,8 @@
 #define MAX_PENDING 5
 #define MAX_LINE 256
 
+char translate_to_pirate(char *buf);
+
 int main(int argc, char * argv[])
 {
 	struct sockaddr_in sin;
@@ -56,20 +58,22 @@ int main(int argc, char * argv[])
 			exit(1);
 		}
 		while (len = recv(new_s, buf, sizeof(buf), 0)){
-
+			
 			if(strncmp (flag,"-p",2) == 0){
-			    printf("translate");
+			    //printf("translate");
+				translate_to_pirate(buf);
+				//send back to client	
+				len1 = strlen(buf) +1;
+				send(new_s, buf, len1, 0);
 			
 			}
-            //send back to client	
-			len1 = strlen(buf) +1;
-			send(new_s, buf, len1, 0);
+
 			/* Logic to strip the NULL chars */
 			int i;
-                        for(i=0;i<sizeof(buf);i++) {
-                                if(buf[i] != '\0')
-                                        printf("%c", buf[i]);
-                        }
+            for(i=0;i<sizeof(buf);i++) {
+                if(buf[i] != '\0')
+                    printf("%c", buf[i]);
+            }
 			
 			/* No need to fputs, as we are already printing
 			   one char at a time */	
@@ -81,3 +85,52 @@ int main(int argc, char * argv[])
 	}
 }
 
+char translate_to_pirate(char *buf){
+
+	char *words[17][2] = {
+				{"hello","ahoy"},
+				{"hi","yo-ho-ho"},
+				{"my","me"},
+				{"friend","bucko"},
+				{"sir","mate"},
+				{"miss","proud beauty"},
+				{"stranger","scurvy dog"},
+				{"officer","foul blaggart"},
+				{"where","whar"},
+				{"is","be"},
+				{"the","thar"},
+				{"you","ye"},
+				{"water","rum"},
+				{"nearby","broadside"},
+				{"restroom","head"},
+				{"restaurant","galley"},
+				{"hotel","fleabag inn"}};
+
+	/*const char s[2] = " ";
+	char *token;
+
+	token = strtok(buf,s);
+	printf("Token: %s", token);
+	while (token != NULL){
+		if(strcmp(token,"\0")== 0){
+			break;
+		}
+		/*int i;
+		for(i=0;i<sizeof(words);i++){
+			if(strncmp(token,words[i][0],strlen(token)) == 0){
+				printf("Normal Word: %s\n Pirate Word: %s\n", token, words[i][0]);
+			}
+		} 
+		
+		token = strtok(NULL, s);
+	}	*/
+	printf("here");
+	int i;
+	for(i=0;i<=sizeof(words);i++){
+		if(strcmp(buf,words[i][0]) == 0){
+			printf("Normal Word: %s\n Pirate Word: %s\n", buf, words[i][0]);
+		}
+	} 
+
+
+}
