@@ -33,7 +33,7 @@ Running:
 
 Challenge:
 	The biggest problem I faced was completing "Step 2". I had the code right for the most
-	part but I was useing the incorrect sockets when trying to send and receive.
+	part but I was using the incorrect sockets when trying to send and receive.
 	Eventually I figured this out and got it working.
 
 Not Working:
